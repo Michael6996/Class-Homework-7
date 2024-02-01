@@ -1,0 +1,88 @@
+import java.io.*;
+import java.util.*;
+
+public class App {
+    public static void main(String[] args) {
+        //Scanner ends in first paragraph
+        Scanner scnr = new Scanner(System.in);
+        System.out.print("Enter the length of the array: ");
+        int i = scnr.nextInt();
+        int[] array = createRandomArray(i);
+        System.out.println("The created array is: " + Arrays.toString(array));
+        System.out.print("Enter the filename to write the array to: ");
+        String filename = scnr.next();
+        writeArrayToFile(array, filename);
+        System.out.println("Array written to file successfully!");
+        System.out.print("Enter the filename to read the array from: ");
+        filename = scnr.next();
+        int[] array2 = readFileToArray(filename);
+        System.out.println("The array read from file is: " + Arrays.toString(array2));
+        bubbleSort(array2);
+        System.out.println("The sorted array is: " + Arrays.toString(array2));
+        
+        scnr.close();
+        //Sorts array, creates an array, and file altering
+    }
+
+    public static int[] createRandomArray(int arrayLength) {
+        int[] array = new int[arrayLength];
+        Random rand = new Random();
+        for (int a = 0; a < arrayLength; a++) {
+            array[a] = rand.nextInt(101);
+        }
+        return array;
+        //Array effects
+    }
+
+    public static void writeArrayToFile(int[] array, String filename) {
+        try {
+            FileWriter fw = new FileWriter(filename);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int a = 0; a < array.length; a++) {
+                bw.write(Integer.toString(array[a]));
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+        // Testing and errors
+    }
+
+    public static int[] readFileToArray(String filename) {
+        ArrayList<Integer> list = new ArrayList<>();
+        try {
+            FileReader fr = new FileReader(filename);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                list.add(Integer.parseInt(line));
+            }
+            br.close();
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+        int[] array = new int[list.size()];
+        for (int a = 0; a < list.size(); a++) {
+            array[a] = list.get(a);
+        }
+        return array;
+        //Testing and error
+    }
+    
+    public static void bubbleSort(int[] array) {
+        int i = array.length;
+        for (int a = 0; a < i - 1; a++) {
+            for (int b = 0; b < i - a - 1; b++) {
+                if (array[b] > array[b + 1]) {
+                    int temp = array[b];
+                    array[b] = array[b + 1];
+                    array[b + 1] = temp;
+                }
+            }
+        }
+    }
+    //Array bubblesort
+}
